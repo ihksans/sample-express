@@ -1,0 +1,25 @@
+{
+  "name": "02-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "start-server": "node app.js",
+    "debug": "nodemon app.js"
+  },
+  "author": "ihksan setiawan",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "express-handlebars": "3.0",
+    "mysql2": "^2.3.3",
+    "pug": "^3.0.2"
+  }
+}
