@@ -69,7 +69,7 @@ class App extends Component {
       }
       `,
     }
-    fetch('http://localhost:8080/graphql/login', {
+    fetch('https://node-js-graph.herokuapp.com/graphql/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,0 +1,6 @@
+{
+    "env": {
+        "MONGO_DATABASE": "mongodb+srv://shop:shop123@cluster0.8yioz.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-7mvi7l-shard-0&w=majority&readPreference=primary&retryWrites=true&ssl=true",
+        "PROJECT_PORT": "8080"
+    }
+}

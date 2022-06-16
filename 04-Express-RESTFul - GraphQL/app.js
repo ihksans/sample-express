@@ -5,6 +5,9 @@ const mongoose = require('mongoose')
 const path = require('path')
 const fs = require('fs')
 const multer = require('multer')
+const helmet = require('helmet')
+const morgan = require('morgan')
+const compression = require('compression')
 const { graphqlHTTP } = require('express-graphql')
 const graphqlSchema = require('./graphql/schema')
 const graphqlResolver = require('./graphql/resolvers')
@@ -33,6 +36,16 @@ const fileFilter = (req, file, cb) => {
     cb(null, false)
   }
 }
+// configuration for secure response header
+app.use(helmet())
+// configuration for compress assets
+app.use(compression())
+// configuration for logging
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  { flags: 'a' },
+)
+app.use(morgan('combined', { stream: accessLogStream }))
 app.use(bodyParser.json()) // request from application/json
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'),
@@ -69,12 +82,10 @@ app.put('/post-image', (req, res, next) => {
     clearImage(req.body.oldPath)
   }
   console.log('image path:', req.file.path)
-  return res
-    .status(201)
-    .json({
-      message: 'File stored.',
-      filePath: req.file.path.replace('\\', '/'),
-    })
+  return res.status(201).json({
+    message: 'File stored.',
+    filePath: req.file.path.replace('\\', '/'),
+  })
 })
 
 // configuration graphql
@@ -107,9 +118,11 @@ app.use((error, req, res, next) => {
 
 // configuration server
 mongoose
-  .connect('mongodb://localhost:27017') //connect to mongo db
+  .connect(
+    'mongodb+srv://shop:shop123@cluster0.8yioz.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-7mvi7l-shard-0&w=majority&readPreference=primary&retryWrites=true&ssl=true',
+  ) //connect to mongo db
   .then((result) => {
-    app.listen(8080)
+    app.listen(process.env.PORT || 3000)
   })
   .catch((err) => console.log(err))
 
