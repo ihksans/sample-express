@@ -122,13 +122,11 @@ module.exports = {
   },
 
   createPost: async function ({ postInput }, req, next) {
-    console.log('auth status', req.isAuth)
     if (!req.isAuth) {
       const error = new Error('Not Authenticate')
       error.code = 401
       throw error
     }
-
     const errors = []
     if (
       validator.isEmpty(postInput.title) ||
@@ -165,10 +163,12 @@ module.exports = {
         imageUrl: imageUrl,
         creator: user,
       })
+
       const result = await post.save()
       creator = user
       await user.posts.push(post)
       await user.save()
+
       return {
         ...result._doc,
         _id: result._id.toString(),
@@ -176,6 +176,8 @@ module.exports = {
         updatedAt: result.updatedAt,
       }
     } catch (err) {
+      console.log('err:', err)
+
       if (!err.statusCode) {
         err.statusCode = 500
       }
